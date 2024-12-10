@@ -21,6 +21,7 @@ jobs:
           - '16'
           - '16.1'
           - '16.2_beta_3'
+          - 'CLT'
         exclude:
           - macos-version: 15
             xcode-version: '15.3'
@@ -62,7 +63,12 @@ jobs:
         env:
           POLICY: ${{ matrix.policy }}
 
-      - run: sudo xcode-select --switch "/Applications/Xcode_${XCODE_VERSION}.app"
+      - run: |
+          if [[ "${XCODE_VERSION}" == CLT ]]; then
+            sudo xcode-select --switch /Library/Developer/CommandLineTools
+          else
+            sudo xcode-select --switch "/Applications/Xcode_${XCODE_VERSION}.app"
+          fi
         env:
           XCODE_VERSION: ${{ matrix.xcode-version }}
 
